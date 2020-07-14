@@ -1,17 +1,13 @@
 class Api::V1::MerchantFindController < ApplicationController
   def index
     name = params[:name].downcase
-    merchants = Merchant.where("name like '%#{name}%'")
+    merchants = Merchant.where("lower(name) like '%#{name}%'")
+    render json: MerchantSerializer.new(merchants)
+  end
+
+  def show
+    fragment = params[:name].downcase
+    merchants = Merchant.where("lower(name) like '%#{fragment}%'").first
     render json: MerchantSerializer.new(merchants)
   end
 end
-# ame = "Manhattan"
-# Movie.where("title like ?", "%#{name}%")
-
-# Client.where("orders_count = '2'").
-
-# Client.where("first_name LIKE '%#{params[:first_name]}%'")
-
-# Schiller
-
-#Schroeder-Jerde
