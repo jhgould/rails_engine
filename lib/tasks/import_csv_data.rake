@@ -5,6 +5,10 @@ desc "Import all CSV data"
 
   task import_csv: :environment do
 
+    ActiveRecord::Base.connection.tables.each do |t|
+    ActiveRecord::Base.connection.reset_pk_sequence!(t)
+  end
+
     Customer.destroy_all
     InvoiceItem.destroy_all
     Invoice.destroy_all
@@ -47,6 +51,12 @@ desc "Import all CSV data"
 
     puts "Invoce data created.."
 
+    CSV.foreach(merchant_data, headers: true) do |row|
+      Merchant.create(row.to_hash)
+    end
+
+    puts "Merchant data created.."
+
     CSV.foreach(item_data, headers: true) do |row|
       Item.create(id: row['id'].to_i,
         name: row['name'],
@@ -59,11 +69,6 @@ desc "Import all CSV data"
 
     puts "Item data created.."
 
-    CSV.foreach(merchant_data, headers: true) do |row|
-      Merchant.create(row.to_hash)
-    end
-
-    puts "Merchant data created.."
 
     CSV.foreach(transaction_data, headers: true) do |row|
       Transaction.create(row.to_hash)
