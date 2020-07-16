@@ -59,4 +59,15 @@ RSpec.describe "Test the merchants api endpoints", type: :request do
       expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
 
+    it 'can get merchant for an item' do
+      merchant1 = Merchant.create(name: "Merchant")
+      item1 =  Item.create!(name: "headphone", description: "plays bangin tunes", unit_price: 100, merchant_id: merchant1.id)
+
+      get ("/api/v1/items/#{item1.id}/merchant")
+      expect(response).to be_successful
+      merchant = JSON.parse(response.body)
+      expect(merchant["data"]["id"].to_i).to eq(merchant1.id)
+    end
+
+
 end
