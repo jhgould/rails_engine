@@ -10,7 +10,7 @@ class Api::V1::MerchantsController < ApplicationController
 
   def create
     # render json: Merchant.create(merchant_params)
-    render json: MerchantSerializer.new(Merchant.create(serialized_merchant_params))
+    render json: MerchantSerializer.new(Merchant.create!(serialized_merchant_params))
 
   end
 
@@ -35,7 +35,7 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def serialized_merchant_params
-    params.permit(:name)
+      params.permit(:name)
   end
 
 end
