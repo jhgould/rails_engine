@@ -7,10 +7,11 @@ class Api::V1::MerchantsBiController < ApplicationController
 
   end
 
-  # def show
-  #   quantity = params[:quantity].to_i
-  #   merchants = Merchant.joins(invoices: [:invoice_items, :transactions]).where("invoices.status='shipped' and transactions.result='success'").group("merchants.name").select("merchants.name, sum(invoice_items.quantity) as items_sold").order("items_sold desc").limit(8)
-  #   render json: MerchantSerializer.new(merchants)
-  # end
+  def show
+    quantity = params[:quantity].to_i
+    merchants = Merchant.joins(invoices: [:invoice_items, :transactions]).where("invoices.status='shipped' and transactions.result='success'").group("merchants.id").select("merchants.*, sum(invoice_items.quantity) as items_sold").order("items_sold desc").limit(quantity)
+    render json: MerchantSerializer.new(merchants)
+  end
+
 
 end

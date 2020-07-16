@@ -22,10 +22,11 @@ RSpec.describe "Test the merchants api endpoints", type: :request do
       expect(merchant["data"]["id"].to_i).to eq(id)
     end
 
-    xit "test that it can create a merchant" do
+    it "test that it can create a merchant" do
       merchant_params = {name: "merchant_name"}
 
-      post "/api/v1/merchants", params: {merchant: merchant_params}
+      # post "/api/v1/merchants", params: {merchant: merchant_params}
+      post "/api/v1/merchants", params: merchant_params
       merchant = Merchant.last
 
 
@@ -33,12 +34,13 @@ RSpec.describe "Test the merchants api endpoints", type: :request do
       expect(merchant.name).to eq(merchant_params[:name])
     end
 
-    xit "can update" do
+    it "can update" do
       id = Merchant.create(name: "Merchant 1").id
       previous_name = Merchant.last.name
       merchant_params = {name: "new name"}
 
-      put "/api/v1/merchants/#{id}", params: {merchant: merchant_params}
+      put "/api/v1/merchants/#{id}", params: merchant_params
+      # put "/api/v1/merchants/#{id}", params: {merchant: merchant_params}
 
       merchant = Merchant.find_by(id: id)
       expect(response).to be_successful
@@ -52,9 +54,9 @@ RSpec.describe "Test the merchants api endpoints", type: :request do
       expect(Merchant.count).to eq(1)
       delete "/api/v1/merchants/#{merchant.id}"
 
-      # expect(response).to be_successful
-      # expect(Merchant.count).to eq(0)
-      # expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
+      expect(response).to be_successful
+      expect(Merchant.count).to eq(0)
+      expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
 
 end

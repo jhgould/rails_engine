@@ -5,9 +5,9 @@ desc "Import all CSV data"
 
   task import_csv: :environment do
 
-    ActiveRecord::Base.connection.tables.each do |t|
-    ActiveRecord::Base.connection.reset_pk_sequence!(t)
-  end
+  #   ActiveRecord::Base.connection.tables.each do |t|
+  #     ActiveRecord::Base.connection.reset_pk_sequence!(t)
+  # end
 
     # Customer.destroy_all
     # puts "deleted customers"
@@ -22,12 +22,12 @@ desc "Import all CSV data"
     # Transaction.destroy_all
     # puts "deleted transacti"
 
+    InvoiceItem.destroy_all
+    puts "deleted invoice items"
     Invoice.destroy_all
     puts "deleted invoice"
     Customer.destroy_all
     puts "deleted customers"
-    InvoiceItem.destroy_all
-    puts "deleted invoice items"
     Merchant.destroy_all
     puts "deleted merchants"
     Item.destroy_all

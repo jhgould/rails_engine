@@ -24,23 +24,23 @@ RSpec.describe "Test the items api endpoints", type: :request do
     expect(items["data"]["id"].to_i).to eq(id)
   end
 
-  xit "can create items" do
+  it "can create items" do
     merchant1 = Merchant.create(name: "some name")
     item_params = {name: "bottle", description: "holds water", unit_price: 100, merchant_id: merchant1.id}
-    post "/api/v1/items", params: {item: item_params}
+    post "/api/v1/items", params: item_params
     item = Item.last
 
     expect(response).to be_successful
     expect(item.name).to eq(item_params[:name])
   end
 
-  xit "can update an item" do
+  it "can update an item" do
     merchant = Merchant.create(name: "merchant")
     id = Item.create(name: "bottle", description: "holds water", unit_price: 100, merchant_id: merchant.id).id
     previous_name = Item.last.name
-    item_params = {name: "big water bottle", description: "holds way more water", unit_price: 100, merchant_id: 1}
+    item_params = {name: "big water bottle", description: "holds way more water", unit_price: 100, merchant_id: merchant.id}
 
-    put "/api/v1/items/#{id}", params: {item: item_params}
+    put "/api/v1/items/#{id}", params: item_params
 
     item = Item.find_by(id: id)
     expect(response).to be_successful
@@ -48,8 +48,9 @@ RSpec.describe "Test the items api endpoints", type: :request do
     expect(item.name).to eq("big water bottle")
   end
 
-  xit "can destroy and item" do
-    item = Item.create(name: "headphone", description: "plays bangin tunes", unit_price: 100, merchant_id: 1)
+  it "can destroy and item" do
+    merchant = Merchant.create(name: "some name")
+    item = Item.create(name: "headphone", description: "plays bangin tunes", unit_price: 100, merchant_id: merchant.id)
 
     expect(Item.count).to eq(1)
 
