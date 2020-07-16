@@ -1,13 +1,13 @@
 class Api::V1::ItemsFindController < ApplicationController
   def index
     fragment = params[:name].downcase
-    items = Item.where("lower(name) like '%#{fragment}%'")
+    items = Item.find_by_fragment(fragment)
     render json: ItemSerializer.new(items)
   end
 
   def show
     fragment = params[:name].downcase
-    items = Item.where("lower(name) like '%#{fragment}%'").first
+    items = Item.find_first_by_fragment(fragment)
     render json: ItemSerializer.new(items)
   end
 end

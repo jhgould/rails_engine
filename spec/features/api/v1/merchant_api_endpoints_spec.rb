@@ -11,7 +11,7 @@ RSpec.describe "Test the merchants api endpoints", type: :request do
 
       expect(response).to be_successful
       merchants = JSON.parse(response.body)
-      expect(merchants["data"].count).to eq(3)
+      expect(merchants["data"].count).to eq(9)
     end
 
     it "test it can find merchant by id" do
@@ -51,12 +51,23 @@ RSpec.describe "Test the merchants api endpoints", type: :request do
     it "can destroy and item" do
       merchant = Merchant.create(name: "Merchant")
 
-      expect(Merchant.count).to eq(1)
+      expect(Merchant.count).to eq(7)
       delete "/api/v1/merchants/#{merchant.id}"
 
       expect(response).to be_successful
-      expect(Merchant.count).to eq(0)
+      expect(Merchant.count).to eq(6)
       expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
     end
+
+    it 'can get merchant for an item' do
+      merchant1 = Merchant.create(name: "Merchant")
+      item1 =  Item.create!(name: "headphone", description: "plays bangin tunes", unit_price: 100, merchant_id: merchant1.id)
+
+      get ("/api/v1/items/#{item1.id}/merchant")
+      expect(response).to be_successful
+      merchant = JSON.parse(response.body)
+      expect(merchant["data"]["id"].to_i).to eq(merchant1.id)
+    end
+
 
 end
