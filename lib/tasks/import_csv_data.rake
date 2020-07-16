@@ -33,7 +33,7 @@ desc "Import all CSV data"
     Item.destroy_all
     puts "deleted items"
     Transaction.destroy_all
-    puts "deleted transacti"
+    puts "deleted transactions"
 
     puts "Old Records Destroyed.."
 
